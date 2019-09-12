@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import Coop, Video
 
-# Register your models here.
+admin.site.register(Coop)
+admin.site.register(Video)

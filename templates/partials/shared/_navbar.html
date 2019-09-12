@@ -11,8 +11,12 @@
         <a class="nav-link" href="{% url 'home' %}">{{user.username}}'s Dashboard</a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" href="{% url 'create_coop' %}">CreateCoop</a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="{% url 'logout' %}">Logout</a>
       </li>
+        
       {% endif %}
       {% if user.is_authenticated == False %}
       <li class="nav-item">
