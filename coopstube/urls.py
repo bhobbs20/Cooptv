@@ -18,5 +18,8 @@ urlpatterns = [
     path('coop/<int:pk>', views.DetailCoop.as_view(), name='detail_coop'),
     path('coop/<int:pk>/update', views.UpdateCoop.as_view(), name='update_coop'),
     path('coop/<int:pk>/delete', views.DeleteCoop.as_view(), name='delete_coop'),
-
+    #Videos
+    path('coop/<int:pk>/addvideo', views.add_video, name='add_video'),
+    # path('video/search', views.video_search, name='video_search'),
+    # path('video/<int:pk>/delete', views.DeleteVideo.as_view(), name='delete_video'),
 ] 

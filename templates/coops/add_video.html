@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container">
+    <h2>Add Video</h2>
+
+    <form method="post">
+     {% csrf_token %}
+     {% load widget_tweaks %}
+     
+     {% for field in form %}
+
+     <div class="form-group {% if field.errors %} alert aler-danger{% endif %}">
+        {{ field.errors }}
+        {{ field.label_tag }}
+        {% render_field field class="form-control" %}
+    </div>
+
+     {% endfor %}
+     <button type="submit" class="btn btn-primary">Create</button>
+     </form>
+
+     <h2>or</h2>
+    <h2> Search</h2>
+        <form>
+       
+           {{ search_form.as_p }} 
+
+        </form>
+    </div> 
+{% endblock %}
