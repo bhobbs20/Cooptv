@@ -6,6 +6,12 @@ from django.contrib.auth import authenticate, login
 from .models import Coop, Video
 from .forms import VideoForm, SearchForm
 import requests
+from django.http import Http404
+import urllib 
+from django.forms.utils import ErrorList
+
+YOUTUBE_API_KEY = 
+
 
 def home(request):
     return render(request, 'coops/index.html')
@@ -16,18 +22,32 @@ def dashboard(request):
 def add_video(request, pk):
     form = VideoForm()
     search_form = SearchForm()
+    coop = Coop.objects.get(pk=pk)
+    if not coop.user == request.user:
+        raise Http404
 
     if request.method == 'POST':
+
         filled_form = VideoForm(request.POST)
         if filled_form.is_valid():
             video = Video()
+            video.coop = coop
             video.url = filled_form.cleaned_data['url']
-            video.title = filled_form.cleaned_data['title']
-            video.youtube_id = filled_form.cleaned_data['youtube_id']
-            video.coop = Coop.objects.get(pk=pk)
-            video.save()
+            parsed_url = urllib.parse.urlparse(video.url)
+            video_id = urllib.parse.parse_qs(parsed_url.query).get('v')
+            if video_id:
+                video.youtube_id = video_id[0]
+                response = requests.get(f'https://www.googleapis.com/youtube/v3/videos?part=snippet&id={ video_id[0] }&key={ YOUTUBE_API_KEY }')
+                json = response.json()
+                title = json['items'][0]['snippet']['title']
+                video.title = title
+                video.save()
+                return redirect('detail_coop', pk)
+            else:
+                errors = form._errors.setdefault('url', ErrorList())
+                errors.append('Needs to be a YouTube URL')
 
-    return render(request, 'coops/add_video.html', {'form': form, 'search_form': search_form })
+    return render(request, 'coops/add_video.html', {'form': form, 'search_form': search_form, 'coop': coop })
 
 class SignUp(generic.CreateView):
     form_class = UserCreationForm
