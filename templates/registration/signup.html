@@ -1,19 +1,46 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %} | Register {% endblock %}
+{% block title %} | Login {% endblock %}
 
 {% block content %}
 
 <div class="container" >
-    <h1>signup</h1>
-    <div class="container">
-        <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-success">Sign Up</button>
-        </form>
+
+<!-- Card -->
+<div class="card reg-card">
+
+  <!-- Card body -->
+  <div class="card-body">
+
+    <p class="h4 text-center py-4">Register</p>
+    <form method="post" class="mb-5">
+     
+    {% csrf_token %}
+    {% if form.non_field_errors %}<div class="alert alert-danger">{{ form.non_field_errors }}</div>{% endif %}
+    {% load widget_tweaks %}
+    {% for field in form %}
+    <div class="form-group {% if field.errors %}alert alert-danger{% endif %}">
+      {{ field.errors }}
+      {{ field.label_tag }}
+      {% render_field field class="form-control" %}
+      {% if field.help_text %}<small class="text-muted">{{ field.help_text|safe }}</small>{% endif %}
     </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-secondary">Sign Up</button>
+  </form>
+       
+
+    <!-- Material form register -->
+
+  </div>
+  <!-- Card body -->
+
 </div>
+<!-- Card -->
+
+
+</div>
+
   
 {% endblock %}

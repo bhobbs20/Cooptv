@@ -2,6 +2,9 @@
 {% block content %}
 
 <div class="container">
+
+    <div class="card mt-5">
+    <div class="card-body">
     <h2>Are you sure you want to delete this Coop?</h2>
     <form method="post">
      {% csrf_token %}
@@ -10,6 +13,8 @@
      </form>
 
      <br>
-     <h2><a href="{% url 'detail_coop' coop.id %}">{{ coop.title }}</a></h2>
+     <h2><a  class="purple-text" href="{% url 'detail_coop' coop.id %}">{{ coop.title }}</a></h2>
+     </div>
+     </div>
     </div>
 {% endblock %}

@@ -1,12 +1,42 @@
 {% extends 'base.html' %}
 
-
 {% block title %} | Dashboard {% endblock %}
 
 {% block content %}
-
-<div class="container" >
-    <h1>Dashboard</h1>
+<div class="container">
+  <div class="jumbotron card card-image my-jumb" style="background-image: url(https://mdbootstrap.com/img/Photos/Others/gradient1.jpg);">
+  <div class="text-white py-5 px-4">
+    <div>
+      <h2 class="card-title h1-responsive pt-3 mb-5 font-bold"><strong>Welcome to your dashboard, {{user.username}} </strong></h2>
+      <p class=" mb-5">Create and manage all your coops and videos
+      </p>
+      <a  href="{% url 'create_coop' %}" class="btn btn-outline-white btn-md"><i class="fas fa-clone left"></i>Create Coop</a>
+    </div>
+  </div>
 </div>
+  {% comment %} <div class="text-left addss">
   
+         <h1 class="display-4 mt-5 pt-4 text-secondary">{{ user.username }}'s Coops  </h1> 
+        <a class="icon-icon icon-icon purple-text" href="{% url 'create_coop' %}"> <i class="fas fa-plus-circle"></i> Create Coop</a>
+   
+  </div> {% endcomment %}
+  {% for coop in coops %}
+    <h2 class="vid-title mt-5"><a class="deep-purple-text" href="{% url 'detail_coop' coop.id %}">{{ coop.title }}</a></h2>
+    <a class="icons-stuff purple-text" href="{% url 'delete_coop' coop.id %}"><i class="fas fa-trash"></i>Delete</a>
+    <a class="icons-stuff purple-text" href="{% url 'update_coop' coop.id %}"><i class="far fa-edit"></i>Edit</a>
+    <a class="icons-stuff purple-text" href="{% url 'add_video' coop.id %}"><i class="fas fa-plus-circle"></i>Add Video</a>
+    <div class="row">
+      {% for video in coop.video_set.all %}
+      <div class="col-md-4 mt-3">
+        <div class="card mb-4 shadow-sm">
+          <iframe width="100%" height="225" src="https://www.youtube.com/embed/{{ video.youtube_id }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          <div class="card-body">
+            <p class="card-text">{{ video.title }}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}

@@ -2,13 +2,26 @@
 {% block content %}
 
 <div class="container">
-    <h2>Update Coop</h2>
+<div class="card mt-5">
+<div class="card-body">
+    <h2 class="purple-text">Update Coop</h2>
     <form method="post">
      {% csrf_token %}
-     {{ form }}
-     <button type="submit" class="btn btn-primary">Save</button>
-     </form>
+     {% load widget_tweaks %}
+     {% for field in form %}
 
+        <div class="form-group {% if field.errors %} alert aler-danger{% endif %}">
+            {{ field.errors }}
+            {{ field.label_tag }}
+            {% render_field field class="form-control" %}
+        </div>
+
+     {% endfor %}
+    
+     </form>
+ <button type="submit" class="btn btn-primary">Save</button>
      <a href="{% url 'delete_coop' coop.id %}" class="btn btn-danger">Delete Hall</a>
-    </div> 
+     </div>
+     </div>
+</div> 
 {% endblock %}
